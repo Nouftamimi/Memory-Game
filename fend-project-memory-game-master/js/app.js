@@ -1,6 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
 var cardIcons = [
     'fa fa-diamond', 'fa fa-paper-plane-o',  
     'fa fa fa-bolt', 'fa fa-anchor',
@@ -20,22 +17,30 @@ let minutes = 0;
 var hours = 0;
 var stop = 0;
 
+let matchedCard = document.getElementsByClassName("match");
 /*
  * timer
  * i took it from website 
 */
+
 window.onload = function() {
     setInterval(function() {
         if (stop !== 1) {
             seconds++;
             if (seconds == 60) {
-                minutes++;        
+                minutes++; 
+                seconds = 0;       
             }
             if (minutes == 60) {
                 hours++;
+                minutes = 0;
+                hours = 0;
             }
         }
+        
     },1000);
+    console.log(minutes);
+    console.log(seconds);
 };
 
 function startGame() {// initilalize the game 
@@ -47,10 +52,8 @@ function startGame() {// initilalize the game
     
         click(cards);//click event to all card
     }   
-
 }
-
-   
+  
 function click(card) {
 
     card.addEventListener("click", function() {//click event to all card 
@@ -61,17 +64,15 @@ function click(card) {
        
         if(cardOpen.length === 1) {//the card is open
             
-            card.classList.add("open", "show", "disabled");
+            card.classList.add("open", "show","disabled");
             cardOpen.push(this);
 
             compareCards(thisCard, backCard);//check thie card if they matched
-
-        } else {// the card didn't match
     
-            thisCard.classList.add("open","show", "disabled");
+        } else {// the card didn't match
+            thisCard.classList.add("open","show","disabled");
             cardOpen.push(this);
-        }
-                  
+        }            
     });
     
 } 
@@ -79,8 +80,6 @@ function click(card) {
 
 ////// this function to compare between the two icons if it's same icons or not
 function compareCards(thisCard, backCard){
-
-
     if(thisCard.innerHTML === backCard.innerHTML) {//the two card matched
         thisCard.classList.add("match");
         backCard.classList.add("match");
@@ -112,9 +111,12 @@ function win() {
         alert("WIN :) \nPlay again smarter \n" 
         + "hours: "+hours+"\n"
         + "Minutes: "+minutes+"\n"
-        + "Seconds: "+seconds);
+        + "Seconds: "+seconds+"\n"
+        + "stars:"+ star()+"\n"
+        + "move: "+ moves);
     }
 }
+
 ///// add move ////
 const movesTheCard = document.querySelector(".moves");
 let moves = 0;
@@ -138,8 +140,9 @@ function star() {
             allThestars.innerHTML = ' <li><i class="fa fa-star"></i></li>  '
         break;
     }
-
 }
+
+// @description congratulations when all cards match, show modal and moves, time and rating
 
 ////////restart the game ////////
 const restartTheGame = document.querySelector(".restart");
@@ -153,6 +156,9 @@ restartTheGame.addEventListener("click", function() {
 
     sameCard = [];
     moves = 0; 
+    seconds = 0;
+    minutes = 0;
+    hours = 0; 
 });
 
 startGame();// start the game for the first time 
@@ -180,6 +186,7 @@ startGame();// start the game for the first time
 
     return array;
 }
+shuffle(cardIcons);
 
 
 /*
@@ -192,4 +199,3 @@ startGame();// start the game for the first time
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
